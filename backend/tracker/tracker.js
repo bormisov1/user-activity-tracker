@@ -78,55 +78,16 @@ function tick(exiting) {
 }
 function send(body) {
     return __awaiter(this, void 0, void 0, function () {
-        var fd, response;
+        var formData;
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    fd = new FormData();
-                    fd.append('tracks', body);
-                    return [4 /*yield*/, navigator.sendBeacon('http://localhost:8001/api/v1/tracks', fd)];
-                case 1:
-                    response = _a.sent();
-                    // const response = await fetch('http://localhost:8001/api/v1/tracks', {
-                    //     method: 'POST',
-                    //     body,
-                    //     headers: {'Content-Type': 'application/json'}
-                    // })
-                    if (!response) {
-                        return [2 /*return*/, false];
-                    }
-                    return [2 /*return*/, true];
-            }
+            formData = new FormData();
+            formData.append('tracks', body);
+            return [2 /*return*/, navigator.sendBeacon('http://localhost:8001/api/v1/tracks', formData)];
         });
     });
 }
 window.addEventListener('visibilitychange', function () {
-    if (document.visibilityState === 'hidden') {
-        console.log('unload', location.href);
+    if (document.visibilityState === 'hidden')
         tick(true);
-    }
 });
-/*window.addEventListener('beforeunload', function(event) {
-    // distinguish browser closed and page changed?
-    console.log('unload')
-    const blob = new Blob([JSON.stringify({tracks: buff})], {type: 'application/json'})
-    //const fd = new FormData()
-    //fd.append('tracks', JSON.stringify(buff))
-    navigator.sendBeacon('http://localhost:8001/api/v1/tracks', fd)
-    tick(true)
-})
-
-window.addEventListener('unload', function(event) {
-    console.log('unload2')
-    const blob = new Blob([JSON.stringify({tracks: buff})], {type: 'application/json'})
-    //const fd = new FormData()
-    //fd.append('tracks', JSON.stringify(buff))
-    navigator.sendBeacon('http://localhost:8001/api/v1/tracks', blob)
-    //tick(true)
-})*/
-// window.onbeforeunload = async function(event) {
-//     // distinguish browser closed and page changed?
-//     console.log('unload')
-//     await tick(true)
-// }
 setInterval(tick, 1000);
